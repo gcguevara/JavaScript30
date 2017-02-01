@@ -59,6 +59,28 @@
 
 <script>
 
+// playSound with e as the event param
+function playSound(e) {
+  const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`); // use backticks for keycodes
+  const key = document.querySelector(`.key[data-key="${e.keyCode}"]`)
+  if(!audio) return; //stop the function from running all together
+  audio.currentTime = 0 // rewind to start to allow multiple clicks in succession
+  audio.play(); 
+  console.log(key);
+  // adding the class 'playing' causes the transform to occur
+  key.classList.add('playing'); // jquery would be key.addClass('playing');
+}
+
+function removeTransition(e){
+  if(e.propertyName !== 'transform') return; // skip if it's not a transform
+  this.classList.remove('playing'); // remove the playing class once the tranform is done
+}
+
+  const keys = document.querySelectorAll('.key'); // select an array of items with class key
+  keys.forEach(key => key.addEventListener('transitionend', removeTransition)) 
+
+  window.addEventListener('keydown', playSound); 
+
 </script>
 
 
